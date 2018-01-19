@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     $countries = \App\Helpers\Countries::$countries;
-    $pricePlans = \App\Priceplan::all();
+    $pricePlans = \App\PricePlan::all();
     return view('landing', compact('countries', 'pricePlans'));
 });
 
