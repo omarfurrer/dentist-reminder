@@ -96,17 +96,50 @@
                 <div class="copyrights">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-7">
-                                <p>&copy; 2017 {{ config('app.name', 'Laravel') }}. All rights reserved.</p>
+                            <div class="col-sm-12">
+                                <p class="d-sm-inline-block">&copy; 2017 {{ config('app.name', 'Laravel') }}. All rights reserved.</p>
+                                <a href="#" data-toggle="modal" data-target="#privacy-policy-modal" class="btn-link d-sm-inline-block text-primary">Privacy Policy</a>
+                                <a href="#" data-toggle="modal" data-target="#refund-policy-modal" class="btn-link d-sm-inline-block text-primary">Refund Policy</a>
                             </div>
-                            <div class="col-md-5 text-right">
-                                <!--<p>Template By <a href="https://bootstrapious.com/" class="external">Bootstrapious</a>  </p>-->
+                            <!--<div class="col-md-5 text-right">-->
+
+
+<!--<p>Template By <a href="https://bootstrapious.com/" class="external">Bootstrapious</a>  </p>-->
                                 <!-- Please do not remove the backlink to Bootstrapious unless you support us at http://bootstrapious.com/donate. It is part of the license conditions. Thanks for understanding :) -->
-                            </div>
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
             </footer>
+        </div>
+
+        <div id="privacy-policy-modal" tabindex="-1" role="dialog" aria-labelledby="privacyPolicy" aria-hidden="true" class="modal fade">
+            <div role="document" class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="privacy-policy-modal-label" class="modal-title">Privacy Policy</h5>
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        This policy covers how we use your personal information. We take your privacy seriously and will take all measures to protect your personal information.
+
+                        Any personal information received will only be used to fill your order. We will not sell or redistribute your information to anyone.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="refund-policy-modal" tabindex="-1" role="dialog" aria-labelledby="refundPolicy" aria-hidden="true" class="modal fade">
+            <div role="document" class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="refund-policy-modal-label" class="modal-title">Refund Policy</h5>
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        If you are not 100% satisfied with your purchase, within 120 days from the purchase date, we will fully refund the cost of your order.
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Scripts -->
@@ -136,6 +169,18 @@
                 s0.parentNode.insertBefore(s1, s0);
             })();
         </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112793887-1"></script>
+        <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() {
+                        dataLayer.push(arguments);
+                    }
+                    gtag('js', new Date());
+
+                    gtag('config', 'UA-112793887-1');
+        </script>
+
         <!--End of Tawk.to Script-->
     </body>
 </html>

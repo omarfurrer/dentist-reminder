@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Priceplan;
+use App\PricePlan;
 
 class PricePlansTableSeeder extends Seeder {
 

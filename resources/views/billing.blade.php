@@ -36,9 +36,11 @@
     <div class="row text-center">
         <div class="col-sm-12">
             @if(!$user->clinic->billing_agreement_active)
-            <a class="btn btn-primary" href="{{ url('/billing/approve') }}">Activate (${{ $plan->price }} billed monthly)</a>
+            <a class="btn btn-primary" href="#">Activate (${{ $plan->price }} billed monthly)</a>
+            <!--<a class="btn btn-primary" href="{{ url('/billing/approve') }}">Activate (${{ $plan->price }} billed monthly)</a>-->
             @else
-            <a class="btn btn-danger" href="{{ url('/billing/cancel') }}">Activate (${{ $plan->price }} billed monthly)</a>
+            <a class="btn btn-danger" href="#">Activate (${{ $plan->price }} billed monthly)</a>
+            <!--<a class="btn btn-danger" href="{{ url('/billing/cancel') }}">Activate (${{ $plan->price }} billed monthly)</a>-->
             @endif
         </div>
     </div>
