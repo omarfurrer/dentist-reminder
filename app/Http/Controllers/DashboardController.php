@@ -49,6 +49,7 @@ class DashboardController extends Controller {
         }
 
         $totalSMSEligibleThisMonth = $this->authUser->clinic->price_plan->sms_total;
+        // Check for year as well
         $totalSMSUsedThisMonth = Sms::join('appointments', 'sms.appointment_id', '=', 'appointments.id')
                 ->join('patients', 'appointments.patient_id', '=', 'patients.id')
                 ->whereRaw('MONTH(sms.send_at) = ?', [date('m')])

@@ -11,14 +11,14 @@
         <div class="col-md-8">
             <ul class="list-group">
                 @foreach($appointments as $appointment)
-                <li class="list-group-item d-flex align-items-center{{$appointment->time->isToday()?' is-today' : ''}}">
-                    <div class="col-md-3">
+                <li class="row list-group-item d-flex align-items-center{{$appointment->time->isToday()?' is-today' : ''}}">
+                    <div class="col-sm-12 col-md-3">
                         {{ $appointment->patient->first_name . ' ' . $appointment->patient->last_name  }}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-12 col-md-4">
                         {{ $appointment->time->isToday() ?( 'Today @ '. $appointment->time->format('h:i A') ) : $appointment->time->format('D d M @ h:i A') }}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-12 col-md-4">
                         <!--<span class="badge badge-primary badge-pill">0 / 3 sent</span>-->
                         <ul class="sms-status-list">
                             @foreach($appointment->sms()->orderBy('send_at','ASC')->get() as $sms)
@@ -27,7 +27,7 @@
                         </ul>
                         <!--<span class="badge badge-primary badge-pill">1 / {{ $appointment->sms()->count() }} delivery failed</span>-->
                     </div>
-                    <div class="col-md-1 d-flex justify-content-end">
+                    <div class="col-sm-12 col-md-1 d-flex justify-content-end">
                         <a 
                             onclick="return deleteModel(event,'delete-form-{{$appointment->id}}', 'Are you sure you want to delete this appointment ? The patient will not receive SMS reminders.');">
                             <i class="fa fa-trash text-danger"></i></a>

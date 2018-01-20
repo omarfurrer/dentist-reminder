@@ -10,6 +10,7 @@ use PayPal\Api\Payer;
 use PayPal\Api\Plan;
 use Illuminate\Support\Facades\Log;
 use PayPal\Exception\PayPalConnectionException;
+use App\Sms;
 
 class BillingController extends Controller {
 
@@ -17,7 +18,14 @@ class BillingController extends Controller {
     {
         $user = $this->authUser;
         $plan = $user->clinic->price_plan;
-        return view('billing', compact('user', 'plan'));
+        // Check for year as well
+        $smsUsed = Sms::join('appointments', 'sms.appointment_id', '=', 'appointments.id')
+                ->join('patients', 'appointments.patient_id', '=', 'patients.id')
+                ->whereRaw('MONTH(sms.send_at) = ?', [date('m')])
+                ->where('patients.clinic_id', '=', $this->authUser->clinic->id)
+                ->where('sms.sent', '=', true)
+                ->count();
+        return view('billing', compact('user', 'plan', 'smsUsed'));
     }
 
     public function approve()

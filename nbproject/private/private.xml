@@ -3,8 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/resources/views/layouts/app.blade.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/resources/views/dashboard.blade.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/app/Console/Kernel.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/database/seeds/AdminUsersTableSeeder.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/resources/views/billing.blade.php</file>
             <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/resources/views/landing.blade.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/resources/views/home.blade.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/app/Http/Controllers/DashboardController.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/app/Clinic.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/routes/web.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/app/Http/Controllers/Auth/RegisterController.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/app/User.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/database/migrations/2014_10_10_000000_create_price_plans_table.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/resources/views/layouts/app.blade.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/app/Console/Commands/SendSMSReminders.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/database/migrations/2014_10_12_000000_create_users_table.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/app/PricePlan.php</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/.env</file>
+            <file>file:/C:/Users/RODZzZ/development/laravel/doctor-reminder/database/seeds/PricePlansTableSeeder.php</file>
         </group>
     </open-files>
 </project-private>
