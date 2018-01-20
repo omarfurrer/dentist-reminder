@@ -46,6 +46,9 @@
                                     {{ Auth::user()->clinic->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a href="{{ url('dashboard') }}" class="dropdown-item">
+                                        Dashboard
+                                    </a>
                                     <a href="{{ url('billing') }}" class="dropdown-item">
                                         Billing
                                     </a>

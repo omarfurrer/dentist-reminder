@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateUsersTable extends Migration {
 
@@ -22,6 +23,7 @@ class CreateUsersTable extends Migration {
             $table->string('password');
             $table->string('country_code');
             $table->string('mobile_number');
+            $table->boolean('is_admin')->default(0);
             $table->integer('clinic_id')->unsigned()->index();
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('cascade');
             $table->rememberToken();
@@ -29,6 +31,8 @@ class CreateUsersTable extends Migration {
 
             $table->unique(['country_code', 'mobile_number']);
         });
+
+        Artisan::call('db:seed', array('--class' => 'AdminUsersTableSeeder'));
     }
 
     /**

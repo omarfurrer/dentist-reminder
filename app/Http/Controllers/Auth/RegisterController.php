@@ -81,7 +81,6 @@ use RegistersUsers {
                     'last_name' => $data['last_name'],
                     'email' => $data['email'],
                     'password' => bcrypt($data['password']),
-                    'clinic_name' => $data['clinic_name'],
                     'country_code' => $data['country_code'],
                     'mobile_number' => $data['mobile_number'],
                     'clinic_id' => $clinic->id

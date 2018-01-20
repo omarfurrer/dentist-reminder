@@ -43,7 +43,7 @@ class DashboardController extends Controller {
             $patient = Patient::find($patient_id);
         }
 
-        if (!$this->authUser->clinic->billing_agreement_active) {
+        if (!$this->authUser->clinic->billing_agreement_active && !$this->authUser->is_admin) {
             Session::flash('error-message', 'You need to setup your billing first before creating an appointment.');
             return redirect()->to('/billing');
         }

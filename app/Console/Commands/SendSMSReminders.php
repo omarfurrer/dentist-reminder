@@ -62,7 +62,7 @@ class SendSMSReminders extends Command {
                 // the body of the text message you'd like to send
                 'body' => $message->content,
                 // sms/{sms}/status/update
-                'StatusCallback' => "http://a26850ae.ngrok.io/sms/{$message->id}/status/update"
+                'StatusCallback' => secure_url("sms/{$message->id}/status/update")
                     )
             );
             $message->sid = $twilioMessage->sid;
