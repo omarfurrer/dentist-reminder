@@ -18,16 +18,9 @@ class Clinic extends Model {
      *
      * @var array
      */
-    protected $fillable = ['name', 'number_of_reminders_per_appointment', 'sms_template', 'price_plan_id', 'billing_agreement_active', 'billing_agreement'];
+    protected $fillable = ['name', 'number_of_reminders_per_appointment', 'sms_template', 'price_plan_id', 'billing_agreement_active'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'billing_agreement' => 'array'
-    ];
+  
 
     /**
      * A clinic has many patients.
@@ -67,6 +60,16 @@ class Clinic extends Model {
     public function price_plan()
     {
         return $this->belongsTo('App\PricePlan');
+    }
+
+    /**
+     * A product has many questions
+     *
+     * @return HasMany
+     */
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
     }
 
 }

@@ -142,8 +142,8 @@
 <!--HERO-->
 <section id="hero" class="hero bg-gray">
     <div class="container">
-        <div class="row d-flex">
-            <div class="col-lg-6 text order-2 order-lg-1">
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-5 text order-2 order-lg-1">
                 <h1>Reduce no-shows and last minute cancellations</h1>
                 <p class="hero-text">Remind your patients automatically with a simple SMS</p>
                 <div class="CTA">
@@ -152,7 +152,9 @@
                     <a href="#" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary">Sign Up Now</a>
                 </div>
             </div>
-            <div class="col-lg-6 order-1 order-lg-2 text-center"><img src="img/sms-sample-2.png" alt="..." class="img-fluid"></div>
+            <!--<div class="col-lg-6 order-1 order-lg-2 text-center"><img src="img/sms-sample-2.png" alt="..." class="img-fluid"></div>-->
+            <!--<div class="col-lg-7 order-1 order-lg-2 text-center"><img src="img/Image-1_iphone6_silver_portrait.png" alt="..." class="img-fluid"></div>-->
+            <div class="col-lg-7 order-1 order-lg-2 text-center"><img src="img/Image-1_iphone8plussilver_portrait.png" alt="..." class="img-fluid"></div>
         </div>
     </div>
 </section>

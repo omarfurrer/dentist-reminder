@@ -16,7 +16,7 @@ class AdminUsersTableSeeder extends Seeder {
         Clinic::create([
             'name' => 'Admin Clinic',
             'sms_template' => "Dear {patient_first_name}, this is a reminder for your dental's appointment {day_relation} {date} at {time}.",
-            'price_plan_id' => 1,
+            'price_plan_id' => 7,
             'number_of_reminders_per_appointment' => 3
         ]);
         User::create([

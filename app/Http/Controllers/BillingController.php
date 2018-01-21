@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
-use PayPal\Api\Agreement;
-use PayPal\Api\Payer;
-use PayPal\Api\Plan;
 use Illuminate\Support\Facades\Log;
-use PayPal\Exception\PayPalConnectionException;
 use App\Sms;
+use Illuminate\Support\Facades\App;
+use Twocheckout;
+use Twocheckout_Error;
+use Twocheckout_Charge;
 
 class BillingController extends Controller {
 
@@ -25,58 +25,99 @@ class BillingController extends Controller {
                 ->where('patients.clinic_id', '=', $this->authUser->clinic->id)
                 ->where('sms.sent', '=', true)
                 ->count();
-        return view('billing', compact('user', 'plan', 'smsUsed'));
+        $tcAccountNumber = config('dentistreminder.two_checkout.account_number');
+        $tcPublicKey = config('dentistreminder.two_checkout.public_key');
+        $tcEnviorement = App::environment('production') ? 'production' : 'sandbox';
+        return view('billing', compact('user', 'plan', 'smsUsed', 'tcAccountNumber', 'tcPublicKey', 'tcEnviorement'));
     }
 
-    public function approve()
+    public function activate(Request $request)
     {
-        $apiContext = new \PayPal\Rest\ApiContext(
-                new \PayPal\Auth\OAuthTokenCredential(
-                config('dentistreminder.paypal.client_id'), // ClientID
-                       config('dentistreminder.paypal.client_secret')      // ClientSecret
-                )
-        );
+        $tcAccountNumber = config('dentistreminder.two_checkout.account_number');
+        $tcPublicKey = config('dentistreminder.two_checkout.public_key');
+        $tcPrivateKey = config('dentistreminder.two_checkout.private_key');
+        $tcEnviorement = App::environment('production') ? 'production' : 'sandbox';
+
+        Twocheckout::privateKey($tcPrivateKey);
+        Twocheckout::sellerId($tcAccountNumber);
+        $sandbox = false;
+        if ($tcEnviorement != 'production') {
+            $sandbox = true;
+            // If you want to turn off SSL verification (Please don't do this in your production environment)
+            Twocheckout::verifySSL(false);  // this is set to true by default
+            // To use your sandbox account set sandbox to true
+            Twocheckout::sandbox(true);
+        }
 
         $billingPlan = $this->authUser->clinic->price_plan;
-        $user = $this->authUser;
-        $clinic = $user->clinic;
-
-        $agreement = new Agreement();
-        $agreement->setName($billingPlan->name . ' monthly plan ($' . $billingPlan->price . ') - ' . $billingPlan->sms_total . ' SMS')
-                ->setDescription('Agreement of ' . $billingPlan->name . ' monthly plan ($' . $billingPlan->price . ') - ' . $billingPlan->sms_total . ' SMS with ' . $clinic->name . ' ID: ' . $clinic->id)
-                ->setStartDate(Carbon::now()->endOfDay()->toIso8601String());
-
-// Add Plan ID
-// Please note that the plan Id should be only set in this case.
-        $plan = new Plan();
-        $plan->setId($billingPlan->paypal_plan_id);
-        $agreement->setPlan($plan);
-// Add Payer
-        $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
-        $agreement->setPayer($payer);
-
-//        dd($agreement->toJSON());
 
         try {
-            // Please note that as the agreement has not yet activated, we wont be receiving the ID just yet.
-            $agreement = $agreement->create($apiContext);
-            // ### Get redirect url
-            // The API response provides the url that you must redirect
-            // the buyer to. Retrieve the url from the $agreement->getApprovalLink()
-            // method
-            $approvalUrl = $agreement->getApprovalLink();
+            $charge = Twocheckout_Charge::auth(array(
+                        "sellerId" => $tcAccountNumber,
+                        "merchantOrderId" => $this->authUser->id,
+                        "token" => $request->token,
+                        "currency" => 'USD',
+//                        "total" => $billingPlan->price,
+                        "lineItems" => [[
+                        "type" => "product",
+                        "name" => $billingPlan->name . ' monthly plan ($' . $billingPlan->price . ')',
+                        "quantity" => 1,
+                        "price" => $billingPlan->price,
+                        "tangible" => 'N',
+                        "productId" => $billingPlan->id,
+                        "recurrence" => "1 Month",
+                        "duration" => "Forever"]
+                        ],
+                        "billingAddr" => array(
+                            "name" => $sandbox ? 'Joe Flagster' : $request->card_name,
+                            "addrLine1" => $sandbox ? '123 Main Street' : $request->address_line_1,
+                            "addrLine2" => $sandbox ? '' : $request->address_line_2,
+                            "city" => $sandbox ? 'Townsville' : $request->city,
+                            "state" => $sandbox ? 'Ohio' : $request->state,
+                            "zipCode" => $sandbox ? '43206' : $request->zip_code,
+                            "country" => $sandbox ? 'USA' : 'EG',
+                            "email" => $this->authUser->email,
+                            "phoneNumber" => $this->authUser->mobile_number
+                        ),
+            ));
+            $data = $charge['response'];
+            $transactionID = $data['transactionId'];
+            $orderNumber = $data['orderNumber'];
+            $responseMsg = $data['responseMsg'];
+            $responseCode = $data['responseCode'];
+            $total = $data['total'];
 
-            return redirect()->to($approvalUrl);
-        } catch (PayPalConnectionException $ex) {
-            Log::error('error occured while approving agreement',
-                       [
-                'user' => $user,
-                'clinic' => $clinic,
-                'agreement' => $agreement,
-                'exception' => $ex->getData()
+            $this->authUser->clinic->transactions()->create([
+                'transaction_id' => $transactionID,
+                'order_number' => $orderNumber,
+                'response_msg' => $responseMsg,
+                'response_code' => $responseCode,
+                'total' => $total,
+                'data' => $data
             ]);
+
+            if ($responseCode == 'APPROVED') {
+                $this->authUser->clinic->billing_agreement_active = 1;
+                $this->authUser->clinic->save();
+                Session::flash('success-message', 'Congratulations. Your payment has been successful.');
+                return redirect()->back();
+            }
+        } catch (Twocheckout_Error $e) {
+            Log::error('Error while activating billing', [
+                'errorMsg' => $e->getMessage(),
+                'user_id' => $this->authUser->id
+            ]);
+
+            Session::flash('error-message', 'Something went wrong. Please try again and if it fails, contact us to solve this issue.');
+            return redirect()->back();
         }
+
+        Log::error('Error while activating billing. No exception.',
+                   [
+            'errorMsg' => $e->getMessage(),
+            'user_id' => $this->authUser->id,
+            'charge' => $charge
+        ]);
 
         Session::flash('error-message', 'Something went wrong. Please try again and if it fails, contact us to solve this issue.');
         return redirect()->back();

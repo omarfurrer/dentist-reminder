@@ -41,8 +41,8 @@ class SendSMSReminders extends Command {
      */
     public function handle()
     {
-        $sid = 'ACa72585b0dcebe0257e98f8a98d42ed4c';
-        $token = '640daf412274d073100183158a4f3399';
+        $sid = config('dentistreminder.twilio.id');
+        $token = config('dentistreminder.twilio.token');
 
         $client = new Client($sid, $token);
 

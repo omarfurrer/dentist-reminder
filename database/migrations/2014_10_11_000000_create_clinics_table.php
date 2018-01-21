@@ -22,7 +22,6 @@ class CreateClinicsTable extends Migration {
             $table->integer('price_plan_id')->unsigned()->index();
             $table->foreign('price_plan_id')->references('id')->on('price_plans')->onDelete('cascade');
             $table->boolean('billing_agreement_active')->default(false);
-            $table->json('billing_agreement')->nullable();
             $table->timestamps();
         });
     }

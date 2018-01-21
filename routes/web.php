@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/appointments', 'DashboardController@addAppointmentWithPatient');
     Route::delete('/dashboard/appointments/{appointment}', 'DashboardController@deleteAppointment');
     Route::get('/billing', 'BillingController@getBilling');
-    Route::get('/billing/approve', 'BillingController@approve');
+    Route::post('/billing/activate', 'BillingController@activate');
 });
 
 

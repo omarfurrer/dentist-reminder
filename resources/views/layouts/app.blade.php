@@ -90,6 +90,26 @@
                 </div>
             </div>
             @endif
+            @if(session()->has('success-message'))
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @if(is_array(session()->get('success-message')))
+                            @foreach(session()->get('success-message') as $message)
+                            <strong>Success!</strong> {{ $message }}
+                            @endforeach
+                            @else
+                            <strong>Success!</strong> {{ session()->get('success-message') }}
+                            @endif
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <!--CONTENT-->
             @yield('content')
